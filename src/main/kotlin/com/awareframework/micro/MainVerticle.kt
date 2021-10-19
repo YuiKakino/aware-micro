@@ -94,7 +94,7 @@ class MainVerticle : AbstractVerticle() {
 
                 val client = WebClient.create(vertx, webClientOptions)
                 val serverURL =
-                  "${serverConfig.getString("server_host")}:${serverConfig.getInteger("server_port")}/index.php/${study.getInteger(
+                  "https:${serverConfig.getString("server_host")}/index.php/${study.getInteger(
                     "study_number"
                   )}/${study.getString("study_key")}"
 
@@ -254,9 +254,7 @@ class MainVerticle : AbstractVerticle() {
          */
         router.route(HttpMethod.GET, "/").handler { route ->
           route.response().putHeader("content-type", "text/html").end(
-            "Hello from AWARE Micro!<br/>Join study: <a href=\"${serverConfig.getString("server_host")}:${serverConfig.getInteger(
-              "server_port"
-            )}/${study.getInteger(
+            "Hello from AWARE Micro!<br/>Join study: <a href=\"${serverConfig.getString("server_host")}/${study.getInteger(
               "study_number"
             )}/${study.getString("study_key")}\">HERE</a>"
           )
@@ -289,7 +287,7 @@ class MainVerticle : AbstractVerticle() {
 
               vertx.deployVerticle("com.awareframework.micro.WebsocketVerticle")
 
-              println("AWARE Micro API at ${serverConfig.getString("server_host")}:${serverConfig.getInteger("server_port")}")
+              println("AWARE Micro API at https:${serverConfig.getString("server_host")}")
               startPromise.complete()
             } else {
               println("AWARE Micro initialisation failed! Because: ${server.cause()}")
@@ -452,7 +450,7 @@ class MainVerticle : AbstractVerticle() {
           "status_webservice" -> awareSetting.put("value", "true")
           "webservice_server" -> awareSetting.put(
             "value",
-            "${serverConfig.getString("server_host")}:${serverConfig.getInteger("server_port")}/index.php/${study.getInteger(
+            "https:${serverConfig.getString("server_host")}/index.php/${study.getInteger(
               "study_number"
             )}/${study.getString("study_key")}"
           )
